@@ -7,10 +7,7 @@ import {
   Send, 
   Linkedin, 
   Github, 
-  Twitter,
   MessageCircle,
-  Gitlab,
-  Facebook,
   MessageCircleCode
 } from 'lucide-react';
 import emailjs from "emailjs-com";
@@ -31,11 +28,12 @@ const Contact: React.FC = () => {
 
     emailjs
       .send(
-        "service_py5t478",
-        "template_vg6ugii",
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         formData,
-        "tdv8NaNP1cOlN_pAF"
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       )
+
       .then(
         (result) => {
           toast.success("Message sent successfully!", {
