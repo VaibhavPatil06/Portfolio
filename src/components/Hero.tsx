@@ -214,8 +214,8 @@ const Hero: React.FC = () => {
               whileTap={{ scale: 0.95 }}
               onClick={() => {
                 const link = document.createElement("a");
-                link.href = "/MERN Stack Developer (1).pdf";
-                link.download = "Vaibhav_Patil_Resume.pdf";
+                  link.href = "/Vaibhav_Resume.pdf"; 
+                  link.download = "Vaibhav_Resume.pdf";
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
