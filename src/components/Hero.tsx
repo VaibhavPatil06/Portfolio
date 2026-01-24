@@ -260,7 +260,7 @@ const Hero: React.FC = () => {
             transition={{ duration: 0.8, delay: 1 }}
           >
             {[
-              { label: "Projects", value: "15+", color: "text-cyan-400" },
+              { label: "Projects", value: "50+", color: "text-cyan-400" },
               { label: "Technologies", value: "20+", color: "text-purple-400" },
               {
                 label: "Experience",
@@ -269,7 +269,7 @@ const Hero: React.FC = () => {
               },
               {
                 label: "Freelancing projects",
-                value: "3+",
+                value: "30+",
                 color: "text-yellow-400",
               },
             ].map((stat, index) => (
