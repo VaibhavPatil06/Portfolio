@@ -353,7 +353,7 @@ const Education: React.FC = () => {
                 <p className="text-blue-100 mb-4">
                   Committed to lifelong learning and professional development
                 </p>
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 gap-4"> 
                   <div>
                     <div className="text-2xl font-bold">25+</div>
                     <div className="text-sm text-blue-200">Tech Skills</div>
