@@ -16,49 +16,95 @@ const Skills: React.FC = () => {
     {
       title: 'Frontend',
       icon: <Code2 size={24} />,
-      skills: ['React.js', 'Next.js', 'Redux', 'React Query', 'TypeScript'],
+      skills: [
+        { name: 'React.js', proficiency: 'Expert' },
+        { name: 'Next.js', proficiency: 'Advanced' },
+        { name: 'TypeScript', proficiency: 'Advanced' },
+        { name: 'Tailwind CSS', proficiency: 'Expert' },
+        { name: 'Redux/TanStack Query', proficiency: 'Advanced' }
+      ],
       color: 'from-blue-500 to-cyan-500'
     },
     {
       title: 'Backend',
       icon: <Server size={24} />,
-      skills: ['Node.js', 'Express.js', 'RESTful APIs', 'Bull MQ','Multer (File handling)'],
+      skills: [
+        { name: 'Node.js', proficiency: 'Expert' },
+        { name: 'Express.js', proficiency: 'Expert' },
+        { name: 'REST APIs', proficiency: 'Expert' },
+        { name: 'Bull MQ', proficiency: 'Advanced' },
+        { name: 'MongoDB Design', proficiency: 'Expert' }
+      ],
       color: 'from-green-500 to-emerald-500'
     },
     {
-      title: 'Blockchain',
+      title: 'Blockchain/Web3',
       icon: <Shield size={24} />,
-      skills: ['Web3.js', 'EVM Chains', 'Smart Contracts', 'NFT Marketplace'],
+      skills: [
+        { name: 'Web3.js', proficiency: 'Advanced' },
+        { name: 'Ethers.js', proficiency: 'Advanced' },
+        { name: 'Smart Contracts', proficiency: 'Intermediate' },
+        { name: 'Tokenomics', proficiency: 'Advanced' },
+        { name: 'BNB Chain & Polygon', proficiency: 'Advanced' }
+      ],
       color: 'from-purple-500 to-pink-500'
     },
     {
       title: 'Databases',
       icon: <Database size={24} />,
-      skills: ['MongoDB', 'MySQL', 'Redis'],
+      skills: [
+        { name: 'MongoDB', proficiency: 'Expert' },
+        { name: 'MySQL', proficiency: 'Advanced' },
+        { name: 'Redis', proficiency: 'Advanced' },
+        { name: 'Data Modeling', proficiency: 'Expert' }
+      ],
       color: 'from-orange-500 to-red-500'
     },
     {
-      title: 'DevOps',
+      title: 'DevOps & Deployment',
       icon: <Cpu size={24} />,
-      skills: ['Jenkins', 'Docker', 'CI/CD', 'Nginx', 'Apache'],
+      skills: [
+        { name: 'Docker', proficiency: 'Advanced' },
+        { name: 'CI/CD Pipelines', proficiency: 'Advanced' },
+        { name: 'Jenkins', proficiency: 'Advanced' },
+        { name: 'AWS EC2', proficiency: 'Intermediate' },
+        { name: 'Nginx/Apache', proficiency: 'Advanced' }
+      ],
       color: 'from-indigo-500 to-purple-500'
     },
     {
-      title: 'UI/UX',
+      title: 'UI/UX Libraries',
       icon: <Palette size={24} />,
-      skills: ['Tailwind CSS', 'MUI', 'Bootstrap', 'Responsive Design','Ant UI'],
+      skills: [
+        { name: 'Material UI', proficiency: 'Advanced' },
+        { name: 'Bootstrap', proficiency: 'Advanced' },
+        { name: 'Ant Design', proficiency: 'Intermediate' },
+        { name: 'Framer Motion', proficiency: 'Advanced' },
+        { name: 'React Hook Form', proficiency: 'Advanced' }
+      ],
       color: 'from-pink-500 to-rose-500'
     },
     {
       title: 'Languages',
       icon: <Globe size={24} />,
-      skills: ['JavaScript', 'TypeScript', 'Python', 'Java'],
+      skills: [
+        { name: 'JavaScript', proficiency: 'Expert' },
+        { name: 'TypeScript', proficiency: 'Advanced' },
+        { name: 'Python', proficiency: 'Intermediate' },
+        { name: 'Java', proficiency: 'Intermediate' }
+      ],
       color: 'from-teal-500 to-cyan-500'
     },
     {
-      title: 'Tools',
+      title: 'Tools & Platforms',
       icon: <Wrench size={24} />,
-      skills: ['Git', 'GitLab', ,'AWS EC2','Postman', 'Jira'],
+      skills: [
+        { name: 'Git & GitHub', proficiency: 'Expert' },
+        { name: 'Postman', proficiency: 'Advanced' },
+        { name: 'Vercel/Netlify', proficiency: 'Advanced' },
+        { name: 'Linux', proficiency: 'Advanced' },
+        { name: 'Jira', proficiency: 'Intermediate' }
+      ],
       color: 'from-yellow-500 to-orange-500'
     }
   ];
@@ -135,20 +181,25 @@ const Skills: React.FC = () => {
                   {category.skills.map((skill, skillIndex) => (
                     <motion.div
                       key={skillIndex}
-                      className="flex items-center justify-between p-2 bg-gray-50 dark:bg-slate-700 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 transition-all"
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.4, delay: skillIndex * 0.1 }}
                       viewport={{ once: true }}
                       whileHover={{ x: 5 }}
                     >
-                      <span className="text-gray-700 dark:text-gray-300 font-medium">
-                        {skill}
+                      <span className="text-gray-700 dark:text-gray-300 font-medium text-sm">
+                        {skill.name}
                       </span>
-                      <motion.div 
-                        className={`w-2 h-2 rounded-full bg-gradient-to-r ${category.color}`}
-                        whileHover={{ scale: 1.5 }}
-                      />
+                      <span className={`text-xs font-bold px-2 py-1 rounded-full ${
+                        skill.proficiency === 'Expert' 
+                          ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+                          : skill.proficiency === 'Advanced'
+                          ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                          : 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300'
+                      }`}>
+                        {skill.proficiency}
+                      </span>
                     </motion.div>
                   ))}
                 </div>

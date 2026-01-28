@@ -10,11 +10,11 @@ const Hero: React.FC = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const typingTexts = [
-    'MERN Developer',
-    'Blockchain Integrator', 
-    'CI/CD & Docker Expert',
-    'Modern JS Refactorer',
-    'Web3 Enthusiast'
+    'Senior MERN Stack Developer',
+    'Web3 & Blockchain Expert', 
+    'Backend Architecture Specialist',
+    'Full Stack Engineer',
+    'Scalable Systems Builder'
   ];
 
   useEffect(() => {
@@ -46,11 +46,11 @@ const Hero: React.FC = () => {
   };
 
   const codeSnippets = [
-    "const developer = 'Vaibhav';",
-    "function buildAmazingApps() {",
-    "  return 'MERN + Blockchain';",
-    "}",
-    "// Ready to code the future"
+    "const profile = {",
+    "  experience: '3+ years',",
+    "  expertise: ['MERN', 'Web3', 'Backend'],",
+    "  mindset: 'Production-Grade'",
+    "};"
   ];
 
   return (
@@ -186,15 +186,15 @@ const Hero: React.FC = () => {
             </motion.div>
 
             <motion.p
-              className="text-xl text-gray-300 flex dark:text-gray-400 max-w-3xl mx-auto mb-8"
+              className="text-lg text-gray-300 dark:text-gray-400 max-w-4xl mx-auto mb-8 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <Code className="inline mr-2  text-purple-400" size={20} />
-              Crafting high-performance full-stack applications with modern
-              tech.
-              <Zap className="inline ml-2 mt-1 text-yellow-400" size={20} />
+              <Code className="inline mr-2 text-purple-400" size={20} />
+              Building scalable MERN applications with a deep focus on backend architecture, 
+              blockchain integration, and production-ready systems.
+              <Zap className="inline ml-2 text-yellow-400" size={20} />
             </motion.p>
           </motion.div>
 
@@ -260,16 +260,16 @@ const Hero: React.FC = () => {
             transition={{ duration: 0.8, delay: 1 }}
           >
             {[
-              { label: "Projects", value: "50+", color: "text-cyan-400" },
-              { label: "Technologies", value: "20+", color: "text-purple-400" },
+              { label: "Production Projects", value: "10+", color: "text-cyan-400" },
+              { label: "Tech Stack", value: "25+", color: "text-purple-400" },
               {
-                label: "Experience",
-                value: "2+ Years",
+                label: "Years Experience",
+                value: "3+",
                 color: "text-green-400",
               },
               {
-                label: "Freelancing projects",
-                value: "30+",
+                label: "Web3 Projects",
+                value: "8+",
                 color: "text-yellow-400",
               },
             ].map((stat, index) => (

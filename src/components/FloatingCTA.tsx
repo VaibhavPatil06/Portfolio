@@ -72,8 +72,8 @@ const FloatingCTA: React.FC = () => {
                 </button>
               </div>
               
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
-                Ready to discuss your next project? Let's build something amazing together!
+              <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm leading-relaxed">
+                Have a MERN, Web3, or backend project in mind? Let's discuss how I can help bring your vision to life.
               </p>
               
               <div className="space-y-2">
