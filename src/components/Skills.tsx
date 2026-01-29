@@ -90,6 +90,7 @@ const Skills: React.FC = () => {
       skills: [
         { name: 'JavaScript', proficiency: 'Expert' },
         { name: 'TypeScript', proficiency: 'Advanced' },
+        { name: 'Solidity', proficiency: 'Intermediate' },
         { name: 'Python', proficiency: 'Intermediate' },
         { name: 'Java', proficiency: 'Intermediate' }
       ],
