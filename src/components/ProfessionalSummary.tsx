@@ -182,14 +182,7 @@ const ProfessionalSummary: React.FC = () => {
           </p>
 
           {/* Neon badge */}
-          <motion.div className="mt-6 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/40 border border-cyan-500/20 shadow-lg shadow-cyan-500/6"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.25 }}
-          >
-            <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-            <div className="text-xs text-cyan-300 font-mono">MAJESTIC_PROFILE — v1.0</div>
-          </motion.div>
+
 
           {/* Mini 3D decorative scene */}
           <motion.div
