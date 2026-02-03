@@ -1,6 +1,107 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import * as THREE from 'three';
 import { Calendar, MapPin, ChevronRight, TrendingUp, Users, Code, Rocket, Award, Zap, Target } from 'lucide-react';
+
+const MiniFloat3D: React.FC<{ className?: string, color1?: number, color2?: number }> = ({ className = '', color1 = 0x00ffff, color2 = 0x8b5cf6 }) => {
+  const mountRef = useRef<HTMLDivElement | null>(null);
+  const speedRef = useRef<number>(0.6);
+
+  useEffect(() => {
+    if (!mountRef.current) return;
+    const container = mountRef.current;
+    const scene = new THREE.Scene();
+
+    const width = Math.max(container.clientWidth, 180);
+    const height = Math.max(container.clientHeight, 120);
+
+    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+    camera.position.set(0, 0, 6);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    // Group of orbiting spheres for subtle motion
+    const group = new THREE.Group();
+    const spheres: THREE.Mesh[] = [];
+    const col1 = new THREE.Color(color1);
+    const col2 = new THREE.Color(color2);
+
+    for (let i = 0; i < 3; i++) {
+      const g = new THREE.SphereGeometry(0.25 - i * 0.04, 24, 24);
+      const m = new THREE.MeshPhysicalMaterial({ color: col1.clone().lerp(col2, i / 2), metalness: 0.5, roughness: 0.2, clearcoat: 0.7 });
+      const s = new THREE.Mesh(g, m);
+      s.position.set(Math.cos((i / 3) * Math.PI * 2) * (1 + i * 0.3), Math.sin((i / 3) * Math.PI * 2) * (0.4 + i * 0.1), 0);
+      group.add(s);
+      spheres.push(s);
+    }
+    scene.add(group);
+
+    const light = new THREE.PointLight(col1.getHex(), 0.6, 8);
+    light.position.set(1.2, 1.0, 2);
+    scene.add(light);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.18);
+    scene.add(ambient);
+
+    const onEnter = () => { speedRef.current = 1.4; };
+    const onLeave = () => { speedRef.current = 0.6; };
+
+    container.addEventListener('pointerenter', onEnter);
+    container.addEventListener('pointerleave', onLeave);
+
+    const handleResize = () => {
+      const w = Math.max(container.clientWidth, 180);
+      const h = Math.max(container.clientHeight, 120);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+    window.addEventListener('resize', handleResize);
+
+    let raf = 0;
+    let last = performance.now();
+    const animate = () => {
+      const now = performance.now();
+      const dt = (now - last) / 1000;
+      last = now;
+      group.rotation.y += dt * 0.6 * speedRef.current;
+      group.rotation.x = Math.sin(now * 0.001) * 0.05;
+
+      // subtle per-sphere wobble
+      spheres.forEach((s, idx) => {
+        s.position.x = Math.cos(now * 0.0008 + idx) * (1 + idx * 0.25);
+        s.position.y = Math.sin(now * 0.001 + idx) * (0.35 + idx * 0.1);
+      });
+
+      light.intensity = 0.4 + Math.sin(now * 0.002) * 0.15;
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      container.removeEventListener('pointerenter', onEnter);
+      container.removeEventListener('pointerleave', onLeave);
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(raf);
+      if (renderer.domElement && container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
+      group.children.forEach((c) => {
+        const mesh = c as THREE.Mesh;
+        const maybeGeo = mesh.geometry as unknown as { dispose?: () => void } | undefined;
+        if (maybeGeo && maybeGeo.dispose) maybeGeo.dispose();
+        const maybeMat = mesh.material as unknown as { dispose?: () => void } | undefined;
+        if (maybeMat && maybeMat.dispose) maybeMat.dispose();
+      });
+      renderer.dispose();
+    };
+  }, [color1, color2]);
+
+  return <div ref={mountRef} className={className} />;
+};
 
 const Experience: React.FC = () => {
   const experiences = [
@@ -106,7 +207,10 @@ const Experience: React.FC = () => {
   };
 
   return (
-    <section id="experience" className="py-20 relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
+    <section id="experience" className="py-20 relative overflow-hidden bg-gradient-to-br from-black/5 via-transparent to-black/5 dark:from-black/80 dark:to-black/90 border-t border-gray-200 dark:border-gray-800">
+      {/* Decorative overlays */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-transparent dark:via-black/60 mix-blend-screen" />
+      <div className="pointer-events-none absolute -left-32 -bottom-24 w-96 h-96 rounded-full bg-gradient-to-br from-cyan-400/8 to-purple-500/8 blur-3xl opacity-30" />
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden opacity-10">
         {[...Array(20)].map((_, i) => (
@@ -134,7 +238,7 @@ const Experience: React.FC = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-16 relative"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -144,12 +248,34 @@ const Experience: React.FC = () => {
             <Rocket className="text-blue-500" size={16} />
             <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">PROFESSIONAL JOURNEY</span>
           </div>
+
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
             Work Experience
           </h2>
+
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Building scalable solutions and leading digital transformation across innovative companies
           </p>
+
+          {/* Neon badge */}
+          <motion.div className="mt-6 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-black/40 border border-cyan-500/20 shadow-lg shadow-cyan-500/6"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.25 }}
+          >
+            <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <div className="text-xs text-cyan-300 font-mono">MAJESTIC_JOURNEY — v1.0</div>
+          </motion.div>
+
+          {/* Mini 3D decorative scene */}
+          <motion.div
+            initial={{ opacity: 0, y: -8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="absolute right-6 top-0 w-64 h-40 hidden lg:block"
+          >
+            <MiniFloat3D className="w-full h-full" color1={0x00ffff} color2={0x8b5cf6} />
+          </motion.div>
         </motion.div>
 
         {/* Experience Stats */}
@@ -163,20 +289,14 @@ const Experience: React.FC = () => {
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              className="bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl p-4 border border-gray-200 dark:border-slate-700 shadow-lg"
-              whileHover={{ y: -5, scale: 1.05 }}
+              className="rounded-2xl p-4 bg-gradient-to-br from-black/5 to-transparent border border-cyan-500/8 shadow-lg hover:shadow-[0_20px_60px_rgba(59,130,246,0.08)]"
+              whileHover={{ y: -6, scale: 1.03 }}
             >
-              <div className="flex items-center gap-3 mb-2">
-                <div className={`p-2 rounded-lg bg-gradient-to-r ${stat.color}`}>
-                  {stat.icon}
-                </div>
-                <div className="text-2xl font-bold text-gray-800 dark:text-white">
-                  {stat.value}
-                </div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`p-3 rounded-lg bg-gradient-to-r ${stat.color} text-white`}>{stat.icon}</div>
+                <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400">{stat.value}</div>
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                {stat.label}
-              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">{stat.label}</div>
             </motion.div>
           ))}
         </motion.div>
@@ -200,8 +320,11 @@ const Experience: React.FC = () => {
                 className="relative group"
               >
                 {/* Timeline Dot */}
-                <div className="absolute left-0 md:left-8 top-8 transform -translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg shadow-blue-500/30 z-20 hidden md:block" />
-                
+                <motion.div className="absolute left-0 md:left-8 top-8 transform -translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg shadow-blue-500/30 z-20 hidden md:block"
+                  animate={{ scale: [1, 1.4, 1], opacity: [1, 0.75, 1] }}
+                  transition={{ duration: 2.2, repeat: Infinity }}
+                />
+
                 <motion.div
                   className="ml-0 md:ml-16 relative"
                   whileHover={{ scale: 1.02 }}
@@ -210,8 +333,7 @@ const Experience: React.FC = () => {
                   {/* Experience Card */}
                   <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-gray-200/50 dark:border-slate-700/50 hover:border-blue-300/50 dark:hover:border-blue-500/30 transition-all duration-300">
                     {/* Card Header */}
-                    <div className="p-8 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-800 border-b border-gray-200/50 dark:border-slate-700/50">
-                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div className="p-8 bg-gradient-to-br from-black/5 to-transparent backdrop-blur-sm border-b border-gray-200/50 dark:border-slate-700/50">                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
                             <span className={`px-3 py-1 rounded-full text-xs font-bold text-white ${
@@ -226,6 +348,11 @@ const Experience: React.FC = () => {
                             <span className="px-3 py-1 bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full">
                               {exp.duration}
                             </span>
+
+                            {/* <button onClick={() => { const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }} className="ml-3 hidden md:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-xs font-semibold shadow-md">
+                              View Role
+                              <ChevronRight size={14} />
+                            </button> */}
                           </div>
                           
                           <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
@@ -316,42 +443,17 @@ const Experience: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Career Progression Bar */}
-        {/* <motion.div
-          className="mt-20 bg-white dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 dark:border-slate-700"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">
-            Career Progression
-          </h3>
-          <div className="relative h-2 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
-            <motion.div
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-green-500 via-blue-500 to-purple-500"
-              initial={{ width: 0 }}
-              whileInView={{ width: '100%' }}
-              transition={{ duration: 2, ease: "easeOut" }}
-              viewport={{ once: true }}
-            />
-            <div className="absolute inset-0 flex justify-between items-center px-4">
-              {['Trainer', 'Junior Dev', 'Mid-Level', 'Senior'].map((level, idx) => (
-                <div key={idx} className="flex flex-col items-center">
-                  <div className={`w-3 h-3 rounded-full ${
-                    idx === 0 ? 'bg-green-500' :
-                    idx === 1 ? 'bg-blue-500' :
-                    idx === 2 ? 'bg-purple-500' :
-                    'bg-pink-500'
-                  }`} />
-                  <span className="text-xs font-medium text-gray-600 dark:text-gray-400 mt-2">
-                    {level}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div> */}
+        {/* Footer CTA */}
+        <div className="mt-12 text-center">
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-full font-bold shadow-2xl shadow-cyan-500/20"
+            onClick={() => { const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}
+          >
+            <span className="text-sm font-mono">Work With Me</span>
+            <span className="text-xs ml-2 bg-white/10 px-2 py-1 rounded-full">Available for hire</span>
+          </motion.button>
+        </div>
       </div>
     </section>
   );

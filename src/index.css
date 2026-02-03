@@ -182,3 +182,40 @@
     opacity: 0.3;
   }
 }
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.bg-size-200 {
+  background-size: 200% auto;
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient-x 3s ease infinite;
+}
+
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}

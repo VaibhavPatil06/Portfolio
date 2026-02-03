@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Code2, 
@@ -10,6 +10,8 @@ import {
   Server,
   Wrench
 } from 'lucide-react';
+
+
 
 const Skills: React.FC = () => {
   const skillCategories = [
@@ -131,10 +133,11 @@ const Skills: React.FC = () => {
   };
 
   return (
-    <section id="skills" className="py-20 bg-white dark:bg-slate-900">
+    <section id="skills" className="py-20 relative overflow-hidden bg-gradient-to-br from-black/5 via-transparent to-black/5 dark:from-black/80 dark:to-black/90 border-t border-gray-200 dark:border-gray-800">
+      <div className="pointer-events-none absolute -right-40 -top-28 w-96 h-96 rounded-full bg-gradient-to-br from-cyan-400/8 to-purple-500/8 blur-3xl opacity-30" />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-16 relative"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -146,6 +149,8 @@ const Skills: React.FC = () => {
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             A comprehensive toolkit for building modern, scalable applications
           </p>
+
+       
         </motion.div>
 
         <motion.div
