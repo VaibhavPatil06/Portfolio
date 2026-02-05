@@ -224,7 +224,7 @@ const Contact: React.FC = () => {
             </p>
           </motion.div>
 
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Left Column - Contact Info & Stats */}
             <motion.div
               className="space-y-8"
@@ -337,7 +337,7 @@ const Contact: React.FC = () => {
 
             {/* Right Column - Contact Form */}
             <motion.div
-              className="relative"
+              className="relative w-full"
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}

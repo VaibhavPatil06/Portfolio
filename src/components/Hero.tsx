@@ -356,6 +356,9 @@ const MajesticInfinitySymbol: React.FC<{ mountRef: React.RefObject<HTMLDivElemen
     rendererRef.current = renderer;
     
     container.appendChild(renderer.domElement);
+    // mark canvas for responsive CSS handling
+    try { renderer.domElement.classList.add('three-canvas'); } catch (e) {}
+    try { container.classList.add('three-canvas-wrapper'); } catch (e) {}
     
     // Advanced Lighting Setup
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
@@ -561,7 +564,7 @@ const MajesticInfinitySymbol: React.FC<{ mountRef: React.RefObject<HTMLDivElemen
   return null;
 };
 
-// Main Hero Component - Refined and Majestic
+// Main Hero Component - Fully Responsive
 const Hero: React.FC = () => {
   const [currentText, setCurrentText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -634,14 +637,14 @@ const Hero: React.FC = () => {
   };
 
   const handleDownloadResume = () => {
-    const resumeUrl = '/Vaibhav_Patil_Resume.pdf';
     const link = document.createElement('a');
-    link.href = resumeUrl;
+    link.href = '/Vaibhav_Resume.pdf';
     link.download = 'Vaibhav_Patil_Resume.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
+
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-gray-900 to-gray-950 backdrop-blur-sm">
@@ -652,77 +655,25 @@ const Hero: React.FC = () => {
       {/* Cosmic Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/80 z-1" />
       
-      {/* Energy Power Indicator */}
-      {/* <motion.div 
-        className="fixed top-6 right-6 z-30 flex items-center gap-3 px-4 py-3 bg-black/50 backdrop-blur-xl rounded-2xl border border-cyan-500/20 shadow-2xl shadow-cyan-500/10"
-        animate={{ 
-          scale: cursorPower > 0.5 ? 1.05 : 1,
-          boxShadow: cursorPower > 0 ? `0 0 ${20 + cursorPower * 40}px rgba(0, 255, 255, ${cursorPower * 0.3})` : 'none'
-        }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
-        <motion.div 
-          className="w-3 h-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400"
-          animate={{ scale: [1, 1.2, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-        <div>
-          <div className="text-xs text-cyan-300/80 font-mono">MERN FLOW</div>
-          <div className="text-lg font-bold text-white font-mono">
-            {Math.round(cursorPower * 100)}%
-            <span className="text-sm text-cyan-300 ml-2">POWER</span>
-          </div>
-        </div>
-      </motion.div> */}
-      
-      <div className="relative z-10 container mx-auto min-h-screen flex flex-col justify-center">
-        <div className="max-w-7xl mx-auto">
-          {/* Majestic Terminal Header */}
-          {/* <motion.div
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="mb-12 inline-block"
-          >
-            <div className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-black/60 to-purple-900/20 backdrop-blur-xl rounded-2xl border border-cyan-500/30 shadow-2xl">
-              <div className="flex gap-2">
-                <motion.div 
-                  className="w-3 h-3 rounded-full bg-red-500"
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                <motion.div 
-                  className="w-3 h-3 rounded-full bg-yellow-500"
-                  animate={{ opacity: [0.7, 1, 0.7] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
-                />
-                <motion.div 
-                  className="w-3 h-3 rounded-full bg-green-500"
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 0.4 }}
-                />
-              </div>
-              <span className="ml-3 text-sm text-cyan-300 font-mono tracking-wider">
-                MAJESTIC_INFINITY — v1.0
-              </span>
-            </div>
-          </motion.div> */}
-
-          {/* Main Content Grid */}
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative z-10 container mx-auto min-h-screen flex flex-col mt-20 justify-center px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto w-full">
+          {/* Main Content Grid - Responsive Layout */}
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+            {/* Left Content Column */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.2 }}
+              className="w-full"
             >
-              {/* Majestic Name */}
+              {/* Majestic Name - Responsive Sizing */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, delay: 0.4 }}
-                className="mb-10"
+                className="mb-6 sm:mb-8 md:mb-10"
               >
-                <h1 className="text-6xl mt-20 md:text-8xl font-bold mb-4 leading-tight">
+                <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-tight">
                   <span className="block bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
                     VAIBHAV
                   </span>
@@ -730,19 +681,19 @@ const Hero: React.FC = () => {
                     Patil
                   </span>
                 </h1>
-                <div className="h-1 w-48 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full" />
+                <div className="h-1 w-32 sm:w-40 md:w-48 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full" />
               </motion.div>
 
-              {/* Quantum Typing Animation */}
+              {/* Quantum Typing Animation - Responsive */}
               <motion.div
-                className="mb-10 relative"
+                className="mb-6 sm:mb-8 md:mb-10 relative"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 0.6 }}
               >
-                <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                   <motion.div 
-                    className="w-1 h-12 rounded-full"
+                    className="w-1 h-8 sm:h-10 md:h-12 rounded-full"
                     animate={{
                       background: `linear-gradient(to bottom, 
                         #00ffff ${cursorPower * 50}%, 
@@ -751,11 +702,11 @@ const Hero: React.FC = () => {
                       boxShadow: cursorPower > 0 ? `0 0 ${10 + cursorPower * 20}px rgba(0, 255, 255, ${cursorPower * 0.5})` : 'none'
                     }}
                   />
-                  <div>
-                    <div className="text-sm text-cyan-400 font-mono mb-1">ACTIVE MODE</div>
-                    <h2 className="text-2xl md:text-3xl font-semibold text-white">
+                  <div className="flex-1">
+                    <div className="text-xs sm:text-sm text-cyan-400 font-mono mb-1">ACTIVE MODE</div>
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-white">
                       <span className="font-mono text-green-400">&gt;</span>
-                      <span className="ml-3 text-cyan-200">
+                      <span className="ml-2 sm:ml-3 text-cyan-200">
                         {currentText}
                         <motion.span 
                           className="text-white"
@@ -770,31 +721,33 @@ const Hero: React.FC = () => {
                 </div>
                 
                 <motion.p 
-                  className="text-xl text-gray-300 leading-relaxed pl-5 border-l-2 border-cyan-500/30"
+                  className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed pl-4 sm:pl-5 border-l-2 border-cyan-500/30"
                   animate={{
                     textShadow: cursorPower > 0 ? `0 0 ${5 + cursorPower * 10}px rgba(0, 255, 255, ${cursorPower * 0.2})` : 'none'
                   }}
                 >
-                  <Code className="inline mr-3 text-purple-400" size={24} />
-                  <code className="inline text-cyan-300 font-mono">const MERN = ['MongoDB','Express','React','Node.js'];</code>
-                  <p>
-
-                  Building scalable, production-ready MERN applications.
-                  <Zap className="inline ml-3 text-yellow-400" size={24} />
-                  </p>
+                  <Code className="inline mr-2 sm:mr-3 text-purple-400 w-5 h-5 sm:w-6 sm:h-6" />
+                  <code className="inline text-cyan-300 font-mono text-sm sm:text-base">
+                    const MERN = ['MongoDB','Express','React','Node.js'];
+                  </code>
+                  <br className="block sm:hidden" />
+                  <span className="block mt-2 sm:inline sm:mt-0">
+                    Building scalable, production-ready MERN applications.
+                    <Zap className="inline ml-2 sm:ml-3 text-yellow-400 w-5 h-5 sm:w-6 sm:h-6" />
+                  </span>
                 </motion.p>
               </motion.div>
 
-              {/* Majestic CTA Buttons */}
+              {/* Majestic CTA Buttons - Responsive */}
               <motion.div
-                className="flex flex-wrap gap-6 mb-12"
+                className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-8 sm:mb-12"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.8 }}
               >
                 <motion.button
                   onClick={handleDownloadResume}
-                  className="group relative px-10 py-5 bg-gradient-to-r from-cyan-600 via-purple-600 to-cyan-600 rounded-full font-bold text-white overflow-hidden"
+                  className="group relative px-6 sm:px-8 md:px-10 py-4 sm:py-5 bg-gradient-to-r from-cyan-600 via-purple-600 to-cyan-600 rounded-full font-bold text-white overflow-hidden w-full sm:w-auto text-base sm:text-lg"
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   animate={{
@@ -809,8 +762,8 @@ const Hero: React.FC = () => {
                     backgroundSize: '200% 200%'
                   }}
                 >
-                  <span className="relative z-10 flex items-center gap-3 text-lg">
-                    <Download className="group-hover:animate-bounce" size={24} />
+                  <span className="relative z-10 flex items-center justify-center sm:justify-start gap-2 sm:gap-3">
+                    <Download className="group-hover:animate-bounce w-5 h-5 sm:w-6 sm:h-6" />
                     Download Resume
                   </span>
                   <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -818,7 +771,7 @@ const Hero: React.FC = () => {
 
                 <motion.button
                   onClick={() => scrollToSection('contact')}
-                  className="px-10 py-5 border-2 border-cyan-400/40 rounded-full font-bold text-cyan-300 hover:text-white transition-all duration-300 flex items-center gap-3 relative overflow-hidden group"
+                  className="px-6 sm:px-8 md:px-10 py-4 sm:py-5 border-2 border-cyan-400/40 rounded-full font-bold text-cyan-300 hover:text-white transition-all duration-300 flex items-center justify-center sm:justify-start gap-2 sm:gap-3 relative overflow-hidden group w-full sm:w-auto text-base sm:text-lg"
                   whileHover={{ 
                     scale: 1.05,
                     borderColor: 'rgb(34 211 238)',
@@ -837,14 +790,14 @@ const Hero: React.FC = () => {
                       ease: "linear"
                     }}
                   />
-                  <Mail size={24} className="relative z-10" />
-                  <span className="relative z-10 text-lg">Contact Me</span>
+                  <Mail className="relative z-10 w-5 h-5 sm:w-6 sm:h-6" />
+                  <span className="relative z-10">Contact Me</span>
                 </motion.button>
               </motion.div>
 
-              {/* Quantum Stats Grid */}
+              {/* Quantum Stats Grid - Responsive */}
               <motion.div
-                className="grid grid-cols-2 md:grid-cols-3 gap-5"
+                className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-5"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 1 }}
@@ -853,14 +806,11 @@ const Hero: React.FC = () => {
                   { icon: Cpu, value: '3+', label: 'Years Experience', color: 'from-cyan-400 to-blue-500', energy: 95 },
                   { icon: Database, value: '25+', label: 'Projects Delivered', color: 'from-purple-400 to-pink-500', energy: 88 },
                   { icon: Globe, value: '10+', label: 'Live Systems', color: 'from-green-400 to-emerald-500', energy: 92 },
-                  // { icon: Shield, value: '8+', label: 'Security Audits', color: 'from-yellow-400 to-amber-500', energy: 87 },
-                  // { icon: Terminal, value: '∞', label: 'Code Infinity', color: 'from-pink-400 to-rose-500', energy: 100 },
-                  // { icon: Zap, value: '⚡', label: 'Cursor Power', color: 'from-blue-400 to-cyan-500', energy: Math.round(cursorPower * 100) },
                 ].map((stat, index) => (
                   <motion.div
                     key={index}
-                    className="p-5 bg-gradient-to-br from-black/40 to-purple-900/10 backdrop-blur-md rounded-xl border border-gray-800/50 hover:border-cyan-500/30 transition-all duration-300 relative overflow-hidden group"
-                    whileHover={{ y: -8, scale: 1.03 }}
+                    className="p-3 sm:p-4 md:p-5 bg-gradient-to-br from-black/40 to-purple-900/10 backdrop-blur-md rounded-xl border border-gray-800/50 hover:border-cyan-500/30 transition-all duration-300 relative overflow-hidden group"
+                    whileHover={{ y: -4, scale: 1.03 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
                     {/* Animated energy bar */}
@@ -873,29 +823,26 @@ const Hero: React.FC = () => {
                       />
                     </div>
                     
-                    <div className={`p-3 rounded-lg bg-gradient-to-br ${stat.color} inline-block mb-4 group-hover:scale-110 transition-transform`}>
-                      <stat.icon className="text-white" size={24} />
+                    <div className={`p-2 sm:p-3 rounded-lg bg-gradient-to-br ${stat.color} inline-block mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
+                      <stat.icon className="text-white w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
-                    <div className={`text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent font-mono`}>
+                    <div className={`text-2xl sm:text-3xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent font-mono`}>
                       {stat.value}
                     </div>
-                    <div className="text-sm text-gray-400 mt-1">{stat.label}</div>
-                    {/* <div className="text-xs text-cyan-300/80 font-mono mt-2">
-                      ENERGY: {stat.energy}%
-                    </div> */}
+                    <div className="text-xs sm:text-sm text-gray-400 mt-1">{stat.label}</div>
                   </motion.div>
                 ))}
               </motion.div>
             </motion.div>
 
-            {/* Quantum Code Panel */}
+            {/* Quantum Code Panel - Responsive */}
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.4 }}
               className="hidden lg:block"
             >
-              <div className="bg-gradient-to-br from-black/60 to-purple-900/20 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-8 relative overflow-hidden shadow-2xl shadow-cyan-500/5">
+              <div className="bg-gradient-to-br from-black/60 to-purple-900/20 backdrop-blur-xl rounded-3xl border border-cyan-500/30 p-6 md:p-8 relative overflow-hidden shadow-2xl shadow-cyan-500/5">
                 {/* Animated border */}
                 <motion.div
                   className="absolute inset-0 rounded-3xl pointer-events-none"
@@ -913,7 +860,7 @@ const Hero: React.FC = () => {
                   }}
                 />
                 
-                <div className="relative z-10">
+         <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-8">
                     <div className="w-3 h-3 rounded-full bg-gradient-to-r from-red-500 to-pink-500" />
                     <div className="w-3 h-3 rounded-full bg-gradient-to-r from-yellow-500 to-amber-500" />
@@ -993,45 +940,71 @@ const Hero: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Majestic Scroll Indicator */}
-          {/* <motion.div
-            onClick={() => scrollToSection('projects')}
-            className="absolute bottom-16 left-1/2 transform -translate-x-1/2 cursor-pointer z-20 group"
-            animate={{ y: [0, 15, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity }}
+          {/* Mobile Code Panel - Shows on mobile/tablet instead of side */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.6 }}
+            className="lg:hidden mt-8 md:mt-12"
           >
-            <div className="flex flex-col items-center">
-              <motion.span 
-                className="text-sm text-cyan-400 mb-4 font-mono tracking-wider"
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                EXPLORE INFINITY
-              </motion.span>
-              <div className="relative">
-                <motion.div
-                  className="w-px h-20 bg-gradient-to-b from-cyan-400/80 via-purple-400/60 to-transparent"
-                  animate={{
-                    height: ['20px', '40px', '20px']
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                <motion.div
-                  className="absolute bottom-0 left-1/2 transform -translate-x-1/2"
-                  animate={{ 
-                    rotate: 360,
-                    scale: [1, 1.2, 1]
-                  }}
-                  transition={{ 
-                    rotate: { duration: 4, repeat: Infinity, ease: "linear" },
-                    scale: { duration: 1.5, repeat: Infinity }
-                  }}
-                >
-                  <ArrowDown className="text-cyan-400 group-hover:text-white transition-colors" size={32} />
-                </motion.div>
+            <div className="bg-gradient-to-br from-black/60 to-purple-900/20 backdrop-blur-xl rounded-2xl border border-cyan-500/30 p-5 sm:p-6 relative overflow-hidden shadow-2xl shadow-cyan-500/5">
+              <motion.div
+                className="absolute inset-0 rounded-2xl pointer-events-none"
+                style={{
+                  background: 'linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent, rgba(139, 92, 246, 0.1), transparent)',
+                  backgroundSize: '400% 400%'
+                }}
+                animate={{
+                  backgroundPosition: ['0% 0%', '100% 100%']
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-red-500 to-pink-500" />
+                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-yellow-500 to-amber-500" />
+                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-green-500 to-emerald-500" />
+                  <span className="ml-3 text-sm text-cyan-300 font-mono tracking-wider">
+                    mern_app.js
+                  </span>
+                </div>
+                
+                <pre className="text-xs sm:text-sm font-mono overflow-x-auto">
+                  <code className="text-gray-300">
+                    <span className="text-purple-400">import</span>{' '}
+                    <span className="text-cyan-300">express</span>{' '}
+                    <span className="text-purple-400">from</span>{' '}
+                    <span className="text-green-400">'express'</span>
+                    <span className="text-gray-500">;</span>
+                    {'\n'}
+                    <span className="text-purple-400">import</span>{' '}
+                    <span className="text-cyan-300">mongoose</span>{' '}
+                    <span className="text-purple-400">from</span>{' '}
+                    <span className="text-green-400">'mongoose'</span>
+                    <span className="text-gray-500">;</span>
+                    {'\n\n'}
+                    <span className="text-purple-400">const</span>{' '}
+                    <span className="text-cyan-300">app</span>{' '}
+                    <span className="text-purple-400">=</span>{' '}
+                    <span className="text-yellow-400">express</span>
+                    <span className="text-gray-500">();</span>
+                    {'\n'}
+                    <span className="text-cyan-300">mongoose</span>
+                    <span className="text-gray-500">.</span>
+                    <span className="text-green-400">connect</span>
+                    <span className="text-gray-500">(</span>
+                    <span className="text-yellow-400">process.env.MONGO_URI</span>
+                    <span className="text-gray-500">);</span>
+                  </code>
+                </pre>
               </div>
             </div>
-          </motion.div> */}
+          </motion.div>
         </div>
       </div>
     </section>

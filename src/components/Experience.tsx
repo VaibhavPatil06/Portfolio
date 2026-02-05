@@ -22,6 +22,9 @@ const MiniFloat3D: React.FC<{ className?: string, color1?: number, color2?: numb
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
+    // mark canvas for responsive CSS handling
+    try { renderer.domElement.classList.add('three-canvas'); } catch (e) {}
+    try { container.classList.add('three-canvas-wrapper'); } catch (e) {}
 
     // Group of orbiting spheres for subtle motion
     const group = new THREE.Group();

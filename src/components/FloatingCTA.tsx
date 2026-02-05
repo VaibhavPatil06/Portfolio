@@ -29,7 +29,7 @@ const FloatingCTA: React.FC = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed bottom-6 right-6 z-50"
+          className="fixed bottom-4 right-6 transform -translate-x-1/2 md:left-auto md:right-6 z-50"
           initial={{ opacity: 0, scale: 0, y: 100 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0, y: 100 }}
@@ -55,7 +55,7 @@ const FloatingCTA: React.FC = () => {
             </motion.button>
           ) : (
             <motion.div
-              className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 w-80 border border-gray-200 dark:border-gray-700"
+              className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 w-full max-w-xs md:w-80 border border-gray-200 dark:border-gray-700"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.2 }}

@@ -219,3 +219,19 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Responsive canvas for Three.js elements: scale to container width on small screens */
+.three-canvas,
+canvas {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+  max-width: 100%;
+}
+
+/* Ensure parent containers used for canvases don't overflow on small viewports */
+.three-canvas-wrapper,
+.three-wrapper {
+  width: 100%;
+  max-width: 100%;
+}

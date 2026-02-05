@@ -23,6 +23,9 @@ const Mini3D: React.FC<{ className?: string, color1?: number, color2?: number }>
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
+    // mark canvas for responsive CSS handling
+    try { renderer.domElement.classList.add('three-canvas'); } catch (e) {}
+    try { container.classList.add('three-canvas-wrapper'); } catch (e) {}
 
     // Decorative object - TorusKnot for visual complexity
     const geo = new THREE.TorusKnotGeometry(0.8, 0.22, 128, 32);
